@@ -1,1 +1,3 @@
 -r production.txt
+pytest-django==2.9.1
+pytest-cov==2.2.1
