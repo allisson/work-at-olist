@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
+from django.core.urlresolvers import reverse
 
 from mptt.models import MPTTModel, TreeForeignKey
 import uuid
@@ -44,6 +45,9 @@ class Channel(CreateUpdateModel):
         verbose_name_plural = 'channels'
         ordering = ['name']
 
+    def get_api_url(self):
+        return reverse('channels:api-channel-detail', args=[self.pk])
+
 
 @python_2_unicode_compatible
 class Category(MPTTModel, CreateUpdateModel):
@@ -83,3 +87,8 @@ class Category(MPTTModel, CreateUpdateModel):
 
     class MPTTMeta:
         order_insertion_by = ['name']
+
+    def get_api_url(self):
+        return reverse(
+            'channels:api-category-detail', args=[self.channel.pk, self.pk]
+        )

@@ -132,3 +132,9 @@ EMAIL_USE_TLS = email_config['EMAIL_USE_TLS']
 # /media/
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+# djangorestframework
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 25
+}
