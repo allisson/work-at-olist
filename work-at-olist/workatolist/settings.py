@@ -34,7 +34,9 @@ INSTALLED_APPS = [
     # third party apps
     'rest_framework',
     'rest_framework_swagger',
+    'mptt',
     # local apps
+    'src.channels',
 ]
 
 MIDDLEWARE_CLASSES = [
