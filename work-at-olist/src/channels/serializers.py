@@ -11,8 +11,20 @@ class ChannelSerializer(serializers.ModelSerializer):
         model = Channel
 
 
-class CategorySerializer(serializers.ModelSerializer):
+class SimpleCategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        exclude = ('channel', 'lft', 'rght', 'tree_id', 'level')
+        fields = ('id', 'created_at', 'updated_at', 'name')
+
+
+class CategorySerializer(serializers.ModelSerializer):
+
+    parent = SimpleCategorySerializer(many=False, read_only=True)
+    children = SimpleCategorySerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Category
+        fields = (
+            'id', 'created_at', 'updated_at', 'name', 'parent', 'children'
+        )

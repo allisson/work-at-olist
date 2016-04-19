@@ -6,6 +6,7 @@ from django.core.urlresolvers import reverse
 
 from mptt.models import MPTTModel, TreeForeignKey
 import uuid
+import csv
 
 
 class CreateUpdateModel(models.Model):
@@ -92,3 +93,20 @@ class Category(MPTTModel, CreateUpdateModel):
         return reverse(
             'channels:api-category-detail', args=[self.channel.pk, self.pk]
         )
+
+
+def import_categories_from_csv(channel_name, csv_path):
+    channel, created = Channel.objects.get_or_create(name=channel_name)
+
+    with open(csv_path) as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            if 'Category' in row:
+                categories = row['Category'].split('/')
+                parent = None
+                for category_str in categories:
+                    category_str = category_str.strip()
+                    category, created = Category.objects.get_or_create(
+                        channel=channel, name=category_str, parent=parent
+                    )
+                    parent = category
